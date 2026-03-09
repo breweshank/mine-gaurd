@@ -320,13 +320,3 @@ Benefits include:
 
 By predicting structural risks before failure occurs, MineGuard AI helps protect **both human lives and critical infrastructure.**
 
----
-
-# License
-
-This project is developed for research, innovation, and disaster safety applications.
-
-
-If you want, I can also give you one final section that makes projects look extremely strong:
-
-“Research Contribution & Technical Novelty” (used in top hackathon and research projects).
