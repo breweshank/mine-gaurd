@@ -1,0 +1,291 @@
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Segoe UI,Arial;
+
+background: linear-gradient(
+120deg,
+#7b6cf6 0%,
+#8fd3f4 40%,
+#6dd5a7 70%,
+#f7b267 100%
+);
+
+min-height:100vh;
+}
+
+
+
+/* HEADER */
+
+header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:20px 30px;
+
+font-size:22px;
+font-weight:600;
+
+color:#000000;
+
+}
+
+
+
+/* LOGOUT BUTTON */
+
+header button{
+
+background: linear-gradient(135deg,#7b6cf6,#2bb673);
+
+border:none;
+padding:10px 18px;
+
+border-radius:10px;
+
+color:white;
+
+cursor:pointer;
+
+font-weight:600;
+
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+
+}
+
+
+
+/* LAYOUT */
+
+.container{
+
+display:flex;
+
+padding:20px;
+
+gap:25px;
+
+}
+
+
+
+/* SIDEBAR */
+
+.sidebar{
+
+width:270px;
+
+background: rgba(255,255,255,0.35);
+
+backdrop-filter: blur(18px);
+
+border-radius:18px;
+
+padding:22px;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+
+display:flex;
+flex-direction:column;
+gap:12px;
+
+}
+
+.sidebar input{
+
+padding:8px;
+
+border-radius:6px;
+
+border:1px solid rgba(0,0,0,0.1);
+
+}
+
+.sidebar button{
+
+background: linear-gradient(135deg,#7b6cf6,#2bb673);
+
+border:none;
+
+padding:10px;
+
+color:white;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-weight:600;
+
+}
+
+
+
+/* DASHBOARD */
+
+.dashboard{
+
+flex:1;
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:25px;
+
+}
+
+
+
+/* CARDS */
+
+.card{
+
+background: rgba(255,255,255,0.45);
+
+backdrop-filter: blur(16px);
+
+border-radius:20px;
+
+padding:20px;
+
+box-shadow:0 15px 35px rgba(0,0,0,0.2);
+
+min-height:300px;
+
+}
+
+
+
+/* IMAGES */
+
+.big_img{
+
+width:100%;
+
+max-height:380px;
+
+object-fit:contain;
+
+border-radius:12px;
+
+display:block;
+
+margin:auto;
+
+}
+
+
+
+.crack_big{
+
+width:100%;
+
+max-height:360px;
+
+object-fit:contain;
+
+border-radius:12px;
+
+display:block;
+
+margin:auto;
+
+}
+
+
+
+/* GAUGE TEXT */
+
+#gauge_value{
+
+text-align:center;
+
+font-size:26px;
+
+margin-top:12px;
+
+font-weight:600;
+
+}
+
+
+
+/* LOGIN PAGE */
+
+.login_bg{
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+height:100vh;
+
+background: linear-gradient(
+120deg,
+#7b6cf6,
+#8fd3f4,
+#6dd5a7,
+#f7b267
+);
+
+}
+
+
+
+.login_box{
+
+background: rgba(255,255,255,0.4);
+
+backdrop-filter: blur(20px);
+
+padding:45px;
+
+border-radius:20px;
+
+display:flex;
+flex-direction:column;
+
+gap:15px;
+
+width:320px;
+
+text-align:center;
+
+box-shadow:0 15px 40px rgba(0,0,0,0.25);
+
+}
+
+.login_box input{
+
+padding:10px;
+
+border-radius:8px;
+
+border:1px solid rgba(0,0,0,0.1);
+
+}
+
+.login_box button{
+
+padding:12px;
+
+background: linear-gradient(135deg,#7b6cf6,#2bb673);
+
+border:none;
+
+color:white;
+
+border-radius:10px;
+
+font-weight:600;
+
+cursor:pointer;
+
+}
