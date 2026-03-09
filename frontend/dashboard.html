@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>MineGuard AI</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+MineGuard AI Safety Intelligence
+
+<button onclick="logout()">Logout</button>
+
+</header>
+
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h3>Upload Data</h3>
+
+<label>Crack Image</label>
+<input type="file" id="crack">
+
+<label>Satellite / Drone (.h5)</label>
+<input type="file" id="sat">
+
+<label>Borewell Depth (m)</label>
+<input type="number" id="borewell" value="10">
+
+<button onclick="analyze()">Run AI Analysis</button>
+
+<button onclick="resetUI()">Reset</button>
+
+</div>
+
+
+
+<!-- DASHBOARD -->
+
+<div class="dashboard">
+
+
+<!-- AI RISK GAUGE -->
+
+<div class="card">
+
+<h3>AI Risk Gauge</h3>
+
+<canvas id="riskChart"></canvas>
+
+<div id="gauge_value">0%</div>
+
+</div>
+
+
+
+<!-- SATELLITE -->
+
+<div class="card">
+
+<h3>Satellite Landslide Detection</h3>
+
+<img id="sat_img" class="big_img">
+
+<div id="sat_result"></div>
+
+</div>
+
+
+
+<!-- CRACK DETECTION -->
+
+<div class="card">
+
+<h3>Crack Detection</h3>
+
+<img id="crack_img" class="crack_big">
+
+<div id="crack_result"></div>
+
+</div>
+
+
+
+<!-- FAILURE PREDICTION -->
+
+<div class="card">
+
+<h3>Future Structural Failure Prediction</h3>
+
+<div id="prediction"></div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* LOGIN PROTECTION */
+
+if(localStorage.getItem("login")!=="true"){
+
+window.location="login.html"
+
+}
+
+
+
+let riskChart
+
+
+
+/* AI RISK GAUGE */
+
+function drawGauge(val){
+
+const ctx=document.getElementById("riskChart")
+
+if(riskChart) riskChart.destroy()
+
+riskChart=new Chart(ctx,{
+
+type:"doughnut",
+
+data:{
+datasets:[{
+data:[val,1-val],
+backgroundColor:["#ff4d4d","#444"]
+}]
+},
+
+options:{
+rotation:-90,
+circumference:180,
+plugins:{legend:{display:false}}
+}
+
+})
+
+document.getElementById("gauge_value").innerText=Math.round(val*100)+"%"
+
+}
+
+
+
+/* MAIN ANALYSIS FUNCTION */
+
+async function analyze(){
+
+let crack=document.getElementById("crack").files[0]
+let sat=document.getElementById("sat").files[0]
+let borewell=document.getElementById("borewell").value
+
+let form=new FormData()
+
+if(crack) form.append("crack_image",crack)
+
+if(sat) form.append("satellite_file",sat)
+
+form.append("borewell_depth",borewell)
+
+
+
+try{
+
+let res=await fetch("http://127.0.0.1:5051/analyze",{
+
+method:"POST",
+body:form
+
+})
+
+
+let data=await res.json()
+
+console.log(data)
+
+
+
+/* RISK GAUGE */
+
+drawGauge(data.final_score)
+
+
+
+/* SATELLITE RESULT */
+
+if(data.satellite){
+
+document.getElementById("sat_img").src=
+
+"data:image/png;base64,"+data.satellite.overlay_image
+
+document.getElementById("sat_result").innerHTML=
+
+`
+Area Ratio: ${data.satellite.area_ratio.toFixed(4)} <br>
+Groundwater Factor: ${data.satellite.groundwater_factor?.toFixed(2) || 0}
+`
+
+}
+
+
+
+/* CRACK RESULT */
+
+if(data.crack){
+
+document.getElementById("crack_img").src=
+
+"data:image/png;base64,"+data.crack.overlay_image
+
+document.getElementById("crack_result").innerHTML=
+
+`
+<b>Disaster Damage Classification</b><br><br>
+
+Damage Level: ${data.crack.damage_class}<br>
+Severity Score: ${data.crack.severity.toFixed(3)}<br><br>
+
+Crack Area Ratio: ${data.crack.area_ratio.toFixed(4)}<br>
+Average Width: ${data.crack.avg_width.toFixed(2)} px<br>
+Crack Length: ${data.crack.length.toFixed(1)} px<br>
+Crack Density: ${data.crack.density.toFixed(2)}
+`
+
+}
+
+
+
+/* FAILURE PREDICTION */
+
+predictFailure(data)
+
+
+}
+
+catch(err){
+
+alert("Backend not running")
+
+}
+
+}
+
+
+
+/* STRUCTURAL FAILURE PREDICTION */
+
+function predictFailure(data){
+
+if(!data.crack){
+
+document.getElementById("prediction").innerHTML=
+"No crack data available."
+
+return
+
+}
+
+let area=data.crack.area_ratio||0
+let width=data.crack.avg_width||0
+let length=data.crack.length||0
+let density=data.crack.density||0
+let propagation=data.crack.propagation||0
+
+
+let width_score=Math.min(width/40,1)
+let length_score=Math.min(length/1000,1)
+
+
+let structuralRisk=
+
+0.35*area+
+0.30*width_score+
+0.20*length_score+
+0.15*density
+
+
+let days
+
+if(structuralRisk>0.8)
+
+days=7
+
+else if(structuralRisk>0.6)
+
+days=30
+
+else if(structuralRisk>0.4)
+
+days=90
+
+else
+
+days=365
+
+
+document.getElementById("prediction").innerHTML=
+
+`
+<b>AI Structural Failure Prediction</b><br><br>
+
+Paris Propagation Factor: ${propagation.toFixed(5)}<br><br>
+
+ Estimated structural failure risk in <b>${days} days</b>
+`
+
+}
+
+
+
+/* RESET */
+
+function resetUI(){
+
+document.getElementById("crack").value=""
+document.getElementById("sat").value=""
+document.getElementById("borewell").value=""
+
+document.getElementById("crack_img").src=""
+document.getElementById("sat_img").src=""
+
+document.getElementById("prediction").innerHTML=""
+document.getElementById("crack_result").innerHTML=""
+document.getElementById("sat_result").innerHTML=""
+
+drawGauge(0)
+
+}
+
+
+
+/* LOGOUT */
+
+function logout(){
+
+localStorage.removeItem("login")
+
+window.location="login.html"
+
+}
+
+
+
+/* INITIAL GAUGE */
+
+drawGauge(0)
+
+</script>
+
+</body>
+</html>
