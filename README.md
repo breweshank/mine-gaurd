@@ -287,7 +287,7 @@ Future versions of MineGuard AI may include:
 
 ## Main Monitoring Dashboard
 
-![Dashboard](images/dashboard.png)
+![Dashboard](images/dashboard.jpeg)
 
 The dashboard provides:
 
@@ -303,7 +303,7 @@ This allows engineers and disaster monitoring teams to **visualize structural ri
 
 # Crack Detection Output
 
-![Crack Detection](images/crack_output.png)
+![Crack Detection](images/crack_output.jpeg)
 
 The crack analysis module extracts important structural parameters.
 
